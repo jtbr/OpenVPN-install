@@ -321,7 +321,8 @@ auth SHA512
 tls-version-min 1.2" > /etc/openvpn/server.conf
 	if [[ "$VARIANT" = '1' ]]; then
 		# If the user selected the fast, less hardened version
-		echo "tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256" >> /etc/openvpn/server.conf
+		# iOS 8 OpenVPN connect doesn't support GCM or SHA256; allow fallback
+		echo "tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA" >> /etc/openvpn/server.conf
 	elif [[ "$VARIANT" = '2' ]]; then
 		# If the user selected the relatively slow, ultra hardened version
 		echo "tls-cipher TLS-DHE-RSA-WITH-AES-256-GCM-SHA384" >> /etc/openvpn/server.conf
@@ -359,7 +360,10 @@ persist-key
 persist-tun
 crl-verify crl.pem
 tls-server
-tls-auth tls-auth.key 0" >> /etc/openvpn/server.conf
+tls-auth tls-auth.key 0
+status openvpn-status.log
+max-clients 3
+verb 3" >> /etc/openvpn/server.conf
 	# Enable net.ipv4.ip_forward for the system
 	if [[ "$OS" = 'debian' ]]; then
 		sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
@@ -446,10 +450,10 @@ tls-auth tls-auth.key 0" >> /etc/openvpn/server.conf
 		echo ""
 		echo "Looks like your server is behind a NAT!"
 		echo ""
-                echo "If your server is NATed (e.g. LowEndSpirit, Scaleway, or behind a router),"
-                echo "then I need to know the address that can be used to access it from outside."
-                echo "If that's not the case, just ignore this and leave the next field blank"
-                read -p "External IP or domain name: " -e USEREXTERNALIP
+		echo "If your server is NATed (e.g. LowEndSpirit, Scaleway, or behind a router),"
+		echo "then I need to know the address that can be used to access it from outside."
+		echo "If that's not the case, just ignore this and leave the next field blank"
+		read -p "External IP or domain name: " -e USEREXTERNALIP
 		if [[ "$USEREXTERNALIP" != "" ]]; then
 			IP=$USEREXTERNALIP
 		fi
@@ -468,10 +472,11 @@ cipher AES-256-CBC
 auth SHA512
 setenv opt block-outside-dns
 tls-version-min 1.2
-tls-client" > /etc/openvpn/client-common.txt
+tls-client
+verb 3" > /etc/openvpn/client-common.txt
 	if [[ "$VARIANT" = '1' ]]; then
 		# If the user selected the fast, less hardened version
-		echo "tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256" >> /etc/openvpn/client-common.txt
+		echo "tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA" >> /etc/openvpn/client-common.txt
 	elif [[ "$VARIANT" = '2' ]]; then
 		# If the user selected the relatively slow, ultra hardened version
 		echo "tls-cipher TLS-DHE-RSA-WITH-AES-256-GCM-SHA384" >> /etc/openvpn/client-common.txt
