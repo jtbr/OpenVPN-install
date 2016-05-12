@@ -3,9 +3,10 @@ OpenVPN [road warrior](http://en.wikipedia.org/wiki/Road_warrior_%28computing%29
 
 This script will let you setup your own VPN server in no more than a minute, even if you haven't used OpenVPN before. It isn't bulletproof but has been designed to be as unobtrusive and universal as possible.
 
+This version differs from Angristan's version in that it DOES write logs (for debugging and verifying), and is intended for personal use, only allowing up to 3 simultaneous clients. It also allows a weaker TLS cipher to support older iOS and android clients, although any client that supports it will prefer a better one with GCM.
+
 ##Fork
 This fork includes :
-- No logs
 - No comp-lzo [compression is a vector for oracle attacks, e.g. CRIME or BREACH](https://github.com/BetterCrypto/Applied-Crypto-Hardening/pull/91#issuecomment-75388575)
 - Better encryption (see below)
 - Avoid DNS leak
