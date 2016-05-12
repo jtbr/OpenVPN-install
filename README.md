@@ -3,7 +3,7 @@ OpenVPN [road warrior](http://en.wikipedia.org/wiki/Road_warrior_%28computing%29
 
 This script will let you setup your own VPN server in no more than a minute, even if you haven't used OpenVPN before. It isn't bulletproof but has been designed to be as unobtrusive and universal as possible.
 
-This version differs from Angristan's version in that it DOES write logs (for debugging and verifying), and is intended for personal use, only allowing up to 3 simultaneous clients. It also allows a weaker TLS cipher to support older iOS and android clients, although any client that supports it will prefer a better one with GCM.
+This version differs from Angristan's version in that it DOES write logs (for debugging and verifying), and is intended for personal use, only allowing up to 3 simultaneous clients. In the "fast" variant (below) it also allows a weaker TLS cipher, in order to support older iOS and android clients, although any client that supports it will will a more secure cipher using GCM.
 
 ##Fork
 This fork includes :
@@ -24,11 +24,11 @@ This fork includes :
 
 ## Variants
 
-When you lauch the script you will be asked to choose a mode. Both will work the same way, but *slow* has higher encryption settings, so it may slow down your connection and take more time to install.
+When you lauch the script you will be asked to choose a mode. Both will work the same way, but *slow* has stronger encryption settings, so it may slow down your connection and take more time to install.
 
-If you're just using your VPN at home, you may choose "fast". But if you're often using public Wi-Fi or traveling a lot, you choose use *slow*.
+If you're just using your VPN at home, you may choose "fast". But if you're often using public Wi-Fi or traveling a lot, you should probably use *slow*.
 
-FYI, "fast" is still more secured than default OpenVPN settings.
+In any case, "fast" is still significantly more secure than default OpenVPN settings.
 
 ### Slow (high encryption)
 Features :
@@ -56,25 +56,23 @@ The script is made to work on these OS :
 - CentOS 6
 - CentOS 7
 
-Each one has been test by myself.
 
 ##Installation
 
 Run the script and follow the assistant:
 
 ```
-wget --no-check-certificate https://bit.ly/ovpn-install -O openvpn-install.sh
-chmod +x openvpn-install.sh
-./openvpn-install.sh
+wget --no-check-certificate http://bit.ly/openvpn-install -O openvpn-install.sh
+sudo source ./openvpn-install.sh
 ```
 
-Once it ends, you can run it again to add more users, remove some of them or even completely uninstall OpenVPN.
+Once it ends, you can run it the second line again to add more users, remove some of them or even completely uninstall OpenVPN.
 
 
 You can get a cheap VPS for 2€/month at [PulseHeberg](https://bit.ly/pulse-vpn).
 
 ## Licence
 
-Based on the work of [Nyr](https://github.com/Nyr/openvpn-install)
+Based on the work of [Nyr](https://github.com/Nyr/openvpn-install), Angristan, and others.
 
 [MIT Licence](https://raw.githubusercontent.com/Angristan/openvpn-install-nyr/master/LICENSE)
